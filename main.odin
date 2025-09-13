@@ -17,14 +17,14 @@ run_simple_simd :: #force_inline proc() {
     defer delete_soa(bodies)
     simple_simd.offset_momentum_auto_soa(&bodies)
 
-    fmt.printf("Simple simd   energy:  %.9f\n", simple_simd.energy_auto_soa(bodies))
+    fmt.printf("Simple simd   energy:  %.9f\n", simple_simd.energy_auto_soa(&bodies))
 
     start:= time.tick_now()
     simple_simd.advance_auto_soa(&bodies, 0.01, n)
     duration := time.tick_since(start)
     fmt.eprintf("Simple simd time: %.3f µs\n", f64(duration) / f64(time.Microsecond))
 
-    fmt.printf("Simple simd   energy:  %.9f\n", simple_simd.energy_auto_soa(bodies))
+    fmt.printf("Simple simd   energy:  %.9f\n", simple_simd.energy_auto_soa(&bodies))
 }
 
 run_full_simd :: #force_inline proc() {

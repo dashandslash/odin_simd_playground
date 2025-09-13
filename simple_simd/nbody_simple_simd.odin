@@ -113,7 +113,7 @@ advance_auto_soa :: #force_inline proc(bodies: ^Bodies, dt: f64, n: int) {
     }
 }
 
-energy_auto_soa :: #force_inline proc(bodies: Bodies) -> f64 {
+energy_auto_soa :: #force_inline proc(bodies: ^Bodies) -> f64 {
     e := 0.0
     #unroll for i in 0..<TOTAL_BODIES {
         speed2 := bodies.vel_x[i]*bodies.vel_x[i] + bodies.vel_y[i]*bodies.vel_y[i] + bodies.vel_z[i]*bodies.vel_z[i]
