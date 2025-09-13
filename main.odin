@@ -13,34 +13,35 @@ run_simple_simd :: #force_inline proc() {
     args := runtime.args__
     n := strconv.parse_int(auto_cast args[1]) or_else 1000
 
-    sys := simple_simd.init_system_soa_stack()
-    simple_simd.offset_momentum_soa_stack(&sys)
+    bodies := simple_simd.init_system_auto_soa()
+    defer delete_soa(bodies)
+    simple_simd.offset_momentum_auto_soa(&bodies)
 
-    fmt.printf("Simple simd   energy:  %.9f\n", simple_simd.energy_soa_stack(&sys))
+    fmt.printf("Simple simd   energy:  %.9f\n", simple_simd.energy_auto_soa(bodies))
 
     start:= time.tick_now()
-    simple_simd.advance_stack(&sys, 0.01, n)
+    simple_simd.advance_auto_soa(&bodies, 0.01, n)
     duration := time.tick_since(start)
     fmt.eprintf("Simple simd time: %.3f µs\n", f64(duration) / f64(time.Microsecond))
 
-    fmt.printf("Simple simd   energy:  %.9f\n", simple_simd.energy_soa_stack(&sys))
+    fmt.printf("Simple simd   energy:  %.9f\n", simple_simd.energy_auto_soa(bodies))
 }
 
 run_full_simd :: #force_inline proc() {
     args := runtime.args__
     n := strconv.parse_int(auto_cast args[1]) or_else 1000
 
-    sys := full_simd.init_system_soa_stack()
-    full_simd.offset_momentum_soa_stack_simd(&sys)
+    bodies := full_simd.init_system_soa_stack()
+    full_simd.offset_momentum_soa_stack_simd(&bodies)
 
-    fmt.printf("Full simd   energy:  %.9f\n", full_simd.energy_soa_stack_simd(&sys))
+    fmt.printf("Full simd   energy:  %.9f\n", full_simd.energy_soa_stack_simd(&bodies))
 
     start:= time.tick_now()
-    full_simd.advance_stack_simd(&sys, 0.01, n)
+    full_simd.advance_stack_simd(&bodies, 0.01, n)
     duration := time.tick_since(start)
     fmt.eprintf("Full simd time: %.3f µs\n", f64(duration) / f64(time.Microsecond))
 
-    fmt.printf("Full simd   energy:  %.9f\n", full_simd.energy_soa_stack_simd(&sys))
+    fmt.printf("Full simd   energy:  %.9f\n", full_simd.energy_soa_stack_simd(&bodies))
 }
 
 main :: proc() {
